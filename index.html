@@ -5,11 +5,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Curso básico de Vue js</title>
-
-  
-
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
 
+  <!-- Componente App -->
+  <div id="app" class="container">
+    <!-- Header -->
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h2>Curso de Vue js</h2>
+      </div>
+    </div>
+    <!-- Form Control -->
+    <div class="row">
+      <div class="col-md-6 col-md-offset-md-6 pull-left">
+        <div class="form-group">
+          <label for="new_task">Nueva Tarea</label>
+          <input type="text" id="new_task" class="form-control" placeholder="Agrega una nueva tarea"
+                 v-model="new_task"
+                 @keyup.enter="addTask" >
+        </div>
+      </div>
+    </div>
+    <!-- Data List -->
+    <div class="row">
+      <div class="col-md-6">
+        <h3 v-if="tasks.length > 0"  class="bg-info text-white text-center"> Listado de Tareas </h3>
+        <h3 v-else="tasks " class="bg-warning text-white text-center"> No hay tareas registradas </h3>
+
+        <ul class="list-group">
+          <!-- v-for es la manera de iterar un array de datos en vue -->
+          <li class="list-group-item"
+              v-for="(task,index) in tasks"
+              v-bind:class=" task.status ? 'disabled bg-light ' : '' "
+              @click=" task.status = !task.status " >
+
+              <button type="button" name="button" class="btn btn-sm btn-danger float-right"
+                      @click="removeTask(index)">-</button>
+
+              <span>{{ task.name }}</span>
+
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <pre class="bg-light">
+          {{new_task}}
+          {{tasks}}
+        </pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <!-- VUE JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js" charset="utf-8"></script>
+  <script src="app.js" charset="utf-8"></script>
 </body>
 </html>
