@@ -28,6 +28,13 @@
                  @keyup.enter="addTask" >
         </div>
       </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="find_task">Buscar una Tarea</label>
+          <input type="text" id="find_task" name="find_task" class="form-control" placeholder="Buscar .."
+                 v-model="find_task">
+        </div>
+      </div>
     </div>
     <!-- Data List -->
     <div class="row">
@@ -38,7 +45,7 @@
         <ul class="list-group">
           <!-- v-for es la manera de iterar un array de datos en vue -->
           <li class="list-group-item"
-              v-for="(task,index) in tasks"
+              v-for="(task,index) in searchTask"
               v-bind:class=" task.status ? 'disabled bg-light ' : '' "
               @click=" task.status = !task.status " >
 
@@ -53,7 +60,7 @@
       <div class="col-md-6">
         <pre class="bg-light">
           {{new_task}}
-          {{tasks}}
+          {{$data | json}}
         </pre>
       </div>
     </div>
