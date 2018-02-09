@@ -20,8 +20,10 @@ new Vue({
 
       }
     },
-    removeTask : function(index) {
-      this.tasks.splice(index,1)
+    removeTask : function(task) {
+      // this.$delete(this.tasks, index)
+      let i = this.tasks.map(item => item.name).indexOf(task.name) // find index of your object
+      this.tasks.splice(i, 1) // remove it from array
     }
   },
   computed: {
