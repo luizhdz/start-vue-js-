@@ -4,75 +4,109 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Curso básico de Vue js</title>
-  <!-- Bootstrap CSS -->
+  <title>Inicio con Vue js</title>
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-</head>
-<body>
 
-  <!-- Componente App -->
-  <div id="app" class="container">
-    <!-- Header -->
-    <div class="row">
-      <div class="col-md-12 text-center">
-        <h2>Curso de Vue js</h2>
-      </div>
-    </div>
-    <!-- Form Control -->
-    <div class="row">
-      <div class="col-md-6 col-md-offset-md-6 pull-left">
-        <div class="form-group">
-          <label for="new_task">Nueva Tarea</label>
-          <input type="text" id="new_task" class="form-control" placeholder="Agrega una nueva tarea"
-                 v-model="new_task"
-                 @keyup.enter="addTask" >
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="find_task">Buscar una Tarea</label>
-          <input type="text" id="find_task" name="find_task" class="form-control" placeholder="Buscar .."
-                 v-model="find_task">
-        </div>
-      </div>
-    </div>
-    <!-- Data List -->
-    <div class="row">
-      <div class="col-md-6">
-        <h3 v-if="tasks.length > 0"  class="bg-info text-white text-center"> Listado de Tareas </h3>
-        <h3 v-else="tasks " class="bg-warning text-white text-center"> No hay tareas registradas </h3>
-
-        <ul class="list-group">
-          <!-- v-for es la manera de iterar un array de datos en vue -->
-          <li class="list-group-item"
-              v-for="(task,index) in searchTask"
-              v-bind:class=" task.status ? 'disabled bg-light ' : '' "
-              @click=" task.status = !task.status " >
-
-              <button type="button" name="button" class="btn btn-sm btn-danger float-right"
-                      @click="removeTask(index)">-</button>
-
-              <span>{{ task.name }}</span>
-
-          </li>
-        </ul>
-      </div>
-      <div class="col-md-6">
-        <pre class="bg-light">
-          {{new_task}}
-          {{$data | json}}
-        </pre>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-  <!-- VUE JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js" charset="utf-8"></script>
-  <script src="app.js" charset="utf-8"></script>
+</head>
+<body>
+  <div id="app" class="container">
+    <h1 class="text-center"> {{message}} </h1>
+    <!-- Formulario input -->
+    <div class="row" >
+        <div class="col-md-6">
+          <div class="form-group" >
+
+            <label for="new_task">Agrega Una Tarea</label>
+
+            <input type="text" id="new_task" class="form-control" placeholder="Nueva Tarea"
+                   v-model="new_task"
+                   @keyup.enter="addTask" >
+          </div>
+        </div>
+        <div class="col-md-6" >
+          <label for="new_task">Buscar Una Tarea</label>
+
+          <input type="text" id="find_task" class="form-control" placeholder="Nueva Tarea"
+                 v-model="find_task" >
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+
+        <h3 v-if="searchTask.length > 0" class="bg-primary text-center text-white"> Listado de tareas </h3>
+        <h3 v-else="searchTask" class="bg-warning text-center text-white"> Sin Tareas </h3>
+
+        <ul class="list-group" >
+          <li class="list-group-item"
+              v-for="(task,index) in searchTask"
+              v-bind:id="task.id"
+              v-bind:class=" task.status ? 'disabled' : '' ">
+              <span>{{task.id+' - '+task.name}}</span>
+              <button type="button" name="button" class="btn btn-sm btn-danger float-right"
+                      @click="deleteTask(index,task.status)"
+                      v-bind:class=" task.status ? 'disabled' : '' ">-</button>
+          </li>
+
+        </ul>
+      </div>
+      <!-- datos de vue -->
+      <div class="col-md-6">
+        <pre>
+          <code>
+            {{ searchTask }}
+          </code>
+        </pre>
+      </div>
+    </div>
+
+  </div>
+
+<div id="app2">
+
+</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js"></script>
+
+  <script>
+    var id_last = 3;
+
+    var app = new Vue({
+      el:"#app",
+
+      data:{
+        message:"Esto es Vue",
+        tasks:[ { id: 1 ,name:"task 1", status:false },
+                { id: 2 ,name:"task 2", status:true },
+                { id: 3 ,name:"task 3", status:false }],
+        new_task: '',
+        find_task:''
+      },
+      methods:{
+        addTask: function () {
+            id_last ++;
+            this.tasks.push({id: id_last , name: this.new_task , status: false });
+            this.new_task = '';
+        },
+        deleteTask: function(index,status){
+          if(!status){
+            console.log(index);
+            this.tasks.splice(index,1);
+          }
+        }
+      },
+      computed:{
+        searchTask:function () {
+          return this.tasks.filter( task => task.name.includes(this.find_task) )
+        }
+      }
+    });
+  </script>
+
+
 </body>
 </html>
+
